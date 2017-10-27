@@ -1,0 +1,12 @@
+body {
+    background-color: #000000;
+}
+
+#kramers {
+    font-size: 0;
+    white-space: nowrap;
+}
+
+img {
+    height: 100%;
+}
