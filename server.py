@@ -14,11 +14,15 @@ result = CF.face.detect(url)
 x1, y1, x2, y2 = tuple(result[0]['faceRectangle'].values())
 im = Image.open(requests.get(url, stream=True).raw)
 face = im.crop((y1,x1,y1+y2,x1+x2))
-w, h = face.size
+face.thumbnail((210, 210), Image.ANTIALIAS)
 
-face.show()
-face.thumbnail((200, 200), Image.ANTIALIAS)
+maskedKramer = Image.open('maskedKramer.png')
+croppedKramer = Image.open('croppedKramer.png')
+background = Image.new("RGBA", maskedKramer.size)
+background.paste(face, (180,310))
+final = Image.new("RGBA", maskedKramer.size)
+final = Image.alpha_composite(final, croppedKramer)
+final = Image.alpha_composite(final, background)
+final = Image.alpha_composite(final, maskedKramer)
 
-#810ish
-
-face.show()
+final.show()
