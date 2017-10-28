@@ -87,9 +87,7 @@ def addFace():
         person = Image.open(requests.get(url, stream=True).raw)
         face = person.crop((y1,x1,y1+y2,x1+x2))
         face.thumbnail((210, 210), Image.ANTIALIAS)
-        filename = 'static/images/' + user + '.png'
-        face.save(filename)
-        faces[user] = filename
+        faces[user] = face
     elif user in faces:
         del faces[user]
 
