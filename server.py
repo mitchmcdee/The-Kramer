@@ -10,8 +10,6 @@ import glob
 
 KEY      = '923e32c414a04b14a2ecaec74190760a' # This is test account so meh if its stolen lel
 BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/'
-HEADER   = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': KEY}
-
 CF.Key.set(KEY)
 CF.BaseUrl.set(BASE_URL)
 
@@ -27,7 +25,6 @@ faces = OrderedDict()
 
 # Remove all old files
 for f in glob.glob(os.path.join('static/images', "user_*")):
-    print('removed!')
     os.remove(f)
 
 ################################################################################

@@ -2,17 +2,17 @@ import cognitive_face as CF
 from PIL import Image
 import requests
 
-KEY = 'e16beb7b73194543910a6281f59d9c54'
-header = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': KEY}
-api_url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect"
+KEY      = '923e32c414a04b14a2ecaec74190760a' # This is test account so meh if its stolen lel
+BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/'
+CF.Key.set(KEY)
+CF.BaseUrl.set(BASE_URL)
 
-testImage = open('static/images/theKramer.png', 'rb')
-r = requests.post(api_url, headers=header, data=testImage)
-
-x1, y1, x2, y2 = tuple(r.json()[0]['faceRectangle'].values())
-im = Image.open(testImage)
-face = im.crop((y1,x1,y1+y2,x1+x2))
-face.thumbnail((210, 210), Image.ANTIALIAS)
+url = 'https://s3.amazonaws.com/PayAus/logins/photos/050/337/809/original/login_1234_636448033080000000.png?1509170561'
+result = CF.face.detect(url)
+x1, y1, x2, y2 = tuple(result[0]['faceRectangle'].values())
+person = Image.open(requests.get(url, stream=True).raw)
+face = person.crop((y1,x1,y1+y2,x1+x2))
+face = face.resize((210,210), Image.ANTIALIAS)
 
 maskedKramer = Image.open('static/images/centreMaskedKramer.png')
 croppedKramer = Image.open('static/images/centreCroppedKramer.png')
