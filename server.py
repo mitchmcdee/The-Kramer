@@ -6,6 +6,7 @@ from collections import OrderedDict
 import requests
 import time
 import os
+import glob
 
 KEY      = '923e32c414a04b14a2ecaec74190760a' # This is test account so meh if its stolen lel
 BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/'
@@ -24,19 +25,24 @@ CENTRE_CROPPED_KRAMER = 'static/images/centreCroppedKramer.png'
 app = Flask(__name__)
 faces = OrderedDict()
 
+# Remove all old files
+for f in glob.glob(os.path.join('static/images', "user_*")):
+    print('removed!')
+    os.remove(f)
+
 ################################################################################
 
 # Get kramer image
 def getKramer(faceInfo, position):
     user, face = faceInfo
     faceHash = tuple([user, position])
-    filename = 'static/images/' + ''.join(faceHash) + '.png'
+    filename = 'static/images/user_' + ''.join(faceHash) + '.png'
     if os.path.exists(filename):
         return filename
 
     masked = Image.open(RIGHT_MASKED_KRAMER if position == 'r' else CENTRE_MASKED_KRAMER)
     cropped = Image.open(RIGHT_CROPPED_KRAMER if position == 'r' else CENTRE_CROPPED_KRAMER)
-    print(face.size)
+
     background = Image.new("RGBA", masked.size)
     background.paste(face, (180,310))
     final = Image.new("RGBA", masked.size)
@@ -86,7 +92,7 @@ def addFace():
         x1, y1, x2, y2 = tuple(result[0]['faceRectangle'].values())
         person = Image.open(requests.get(url, stream=True).raw)
         face = person.crop((y1,x1,y1+y2,x1+x2))
-        faces[user] = face.resize((400,400), Image.ANTIALIAS)
+        faces[user] = face.resize((210,210), Image.ANTIALIAS)
     elif user in faces:
         del faces[user]
 
