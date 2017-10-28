@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, jsonify, request
 from waitress import serve
 from PIL import Image
 import requests
@@ -58,14 +58,8 @@ def getKramer(faceInfo, position):
     return filename
 
 # Webhook to add face to server log
-@app.route('/_addFace')
-def addFace():
-    faces.append(['smiling', face])
-    return redirect('/') # Remove this
-
-# Catch all
-@app.route("/")
-def index():
+@app.route('/_getKramers', methods=['POST'])
+def getKramers():
     kramers = []
 
     if len(faces) == 0:
@@ -76,10 +70,22 @@ def index():
     for i, face in enumerate(faces):
         if i == len(faces) - 1: # If last
             kramers.append(getKramer(face, 'r')) # Get right kramer
+
         else:
             kramers.append(getKramer(face, 'c')) # Get centre kramer
 
-    return render_template('index.html', kramers=kramers)
+    return jsonify(kramers=kramers)
+
+# Webhook to add face to server log
+@app.route('/_addFace', methods=['GET', 'POST'])
+def addFace():
+    faces.append(['smiling', face]) # get from webhook, get face, add to faces with id
+    return redirect('/') # Remove this
+
+# Catch all
+@app.route("/")
+def index():
+    return render_template('index.html')
 
 if __name__ == "__main__":
     serve(app)
