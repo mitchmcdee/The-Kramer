@@ -1,5 +1,5 @@
 SCROLL_RATE = 20;
-KRAMER_RATE = 1000;
+KRAMER_RATE = 100;
 scrollModifier = 1;
 kramers = [];
 

@@ -49,7 +49,6 @@ def getKramer(faceInfo, position):
             final = Image.alpha_composite(final, background)
             final = Image.alpha_composite(final, masked)
         except:
-            print('fek')
             pass
         else:
             break
