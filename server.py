@@ -89,4 +89,4 @@ def index():
     return render_template('index.html')
 
 if __name__ == "__main__":
-    serve(app)
+    serve(app, port=80)

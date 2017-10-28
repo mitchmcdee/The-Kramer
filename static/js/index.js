@@ -46,6 +46,7 @@ function getKramers() {
     delay = setTimeout(getKramers, KRAMER_RATE);
 };
 
+// Set up 
 window.addEventListener('load', function() {
     autoBounce();
     getKramers();
