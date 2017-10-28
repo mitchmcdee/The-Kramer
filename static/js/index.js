@@ -15,6 +15,22 @@ function autoBounce() {
     delay = setTimeout(autoBounce, SCROLL_RATE);
 }
 
+function updateKramers() {
+    kramerSpan = document.getElementById('kramers');
+
+    // Remove all old kramers
+    while (kramerSpan.hasChildNodes()) {
+        kramerSpan.removeChild(kramerSpan.lastChild);
+    }
+
+    // Add all new kramers
+    kramers.forEach(kramer => {
+        var img = document.createElement("img");
+        img.setAttribute('src', kramer);
+        kramerSpan.appendChild(img);
+    });
+}
+
 function getKramers() {
     $.ajax({
         url: "_getKramers",
@@ -28,6 +44,7 @@ function getKramers() {
         }
 
         kramers = res.kramers;
+        updateKramers();
         // Update images
         console.log("updating! " + kramers);
     });
