@@ -36,7 +36,7 @@ def getKramer(faceInfo, position):
 
     masked = Image.open(RIGHT_MASKED_KRAMER if position == 'r' else CENTRE_MASKED_KRAMER)
     cropped = Image.open(RIGHT_CROPPED_KRAMER if position == 'r' else CENTRE_CROPPED_KRAMER)
-
+    print(face.size)
     background = Image.new("RGBA", masked.size)
     background.paste(face, (180,310))
     final = Image.new("RGBA", masked.size)
@@ -86,7 +86,7 @@ def addFace():
         x1, y1, x2, y2 = tuple(result[0]['faceRectangle'].values())
         person = Image.open(requests.get(url, stream=True).raw)
         face = person.crop((y1,x1,y1+y2,x1+x2))
-        faces[user] = face.resize((210,210), Image.ANTIALIAS)
+        faces[user] = face.resize((400,400), Image.ANTIALIAS)
     elif user in faces:
         del faces[user]
 
