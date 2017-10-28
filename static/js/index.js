@@ -29,10 +29,11 @@ function updateKramers() {
         img.setAttribute('src', kramer);
 
         if (i == 0) {
+            console.log('hey');
             var a = document.createElement("a");
             a.setAttribute('href', '_stream');
-            kramerSpan.appendChild(a);
             a.appendChild(img);
+            kramerSpan.appendChild(a);
         } else {
             kramerSpan.appendChild(img);
         }
