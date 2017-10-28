@@ -92,6 +92,10 @@ def addFace():
     if r['type'] == 'clockin':
         url = r['photo']
         result = CF.face.detect(url)
+        if len(result) == 0:
+            print('bad photo, try again')
+            return 'NOT OK'
+
         print(result)
         x1, y1, x2, y2 = tuple(result[0]['faceRectangle'].values())
         person = Image.open(requests.get(url, stream=True).raw)
