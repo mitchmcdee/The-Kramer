@@ -77,7 +77,7 @@ def getKramers():
 @app.route('/_clockIn', methods=['POST'])
 def addFace():
     r = request.get_json()['payload']['body']
-    user = r['user_id']
+    user = str(r['user_id'])
     print(r)
 
     if r['type'] == 'clockin':
