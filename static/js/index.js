@@ -24,10 +24,18 @@ function updateKramers() {
     }
 
     // Add all new kramers
-    kramers.forEach(kramer => {
+    kramers.forEach((kramer, i) => {
         var img = document.createElement("img");
         img.setAttribute('src', kramer);
-        kramerSpan.appendChild(img);
+
+        if (i == 0) {
+            var a = document.createElement("a");
+            a.setAttribute('href', '_stream');
+            a.appendChild(img);
+            kramerSpan.appendChild(a);
+        } else {
+            kramerSpan.appendChild(img);
+        }
     });
 }
 

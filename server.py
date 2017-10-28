@@ -60,6 +60,11 @@ def getKramer(faceInfo, position):
     return filename
 
 # Webhook to add face to server log
+@app.route('/_stream')
+def streamKramer():
+    return render_template('stream.html')
+
+# Webhook to add face to server log
 @app.route('/_getKramers', methods=['POST'])
 def getKramers():
     kramers = []
@@ -84,13 +89,14 @@ def addFace():
     user = str(r['user_id'])
     print(r)
 
+    # Add/Remove user
     if r['type'] == 'clockin':
         url = r['photo']
         result = CF.face.detect(url)
         x1, y1, x2, y2 = tuple(result[0]['faceRectangle'].values())
         person = Image.open(requests.get(url, stream=True).raw)
         face = person.crop((y1,x1,y1+y2,x1+x2))
-        faces[user] = face.resize((210,210), Image.ANTIALIAS)
+        faces[user] = face.resize((160,210), Image.ANTIALIAS)
     elif user in faces:
         del faces[user]
 
@@ -101,5 +107,6 @@ def addFace():
 def index():
     return render_template('index.html')
 
+# Start server
 if __name__ == "__main__":
     serve(app, port=80)
