@@ -2,7 +2,7 @@ import cognitive_face as CF
 from PIL import Image
 import requests
 
-KEY = '923e32c414a04b14a2ecaec74190760a'
+KEY = 'e16beb7b73194543910a6281f59d9c54'
 header = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': KEY}
 api_url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect"
 

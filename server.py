@@ -77,8 +77,9 @@ def getKramers():
     return jsonify(kramers=kramers)
 
 # Webhook to add face to server log
-@app.route('/_addFace', methods=['GET', 'POST'])
+@app.route('/_clockIn', methods=['GET', 'POST'])
 def addFace():
+    print('got webhook!')
     faces.append(['smiling', face]) # get from webhook, get face, add to faces with id
     return redirect('/') # Remove this
 

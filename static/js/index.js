@@ -32,27 +32,19 @@ function updateKramers() {
 }
 
 function getKramers() {
-    $.ajax({
-        url: "_getKramers",
-        type: "POST",
-        data: kramers
-    })
-    .done(res => {
+    $.ajax({ url: "_getKramers", type: "POST" }).done(res => {
         // If arrays are equal, don't update images
         if (res.kramers.join(',') == kramers.join(',')) {
             return;
         }
 
+        // Update kramers
         kramers = res.kramers;
         updateKramers();
-        // Update images
-        console.log("updating! " + kramers);
     });
 
     delay = setTimeout(getKramers, KRAMER_RATE);
 };
-
-
 
 window.addEventListener('load', function() {
     autoBounce();
