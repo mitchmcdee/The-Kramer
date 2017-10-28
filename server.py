@@ -86,10 +86,7 @@ def addFace():
         x1, y1, x2, y2 = tuple(result[0]['faceRectangle'].values())
         person = Image.open(requests.get(url, stream=True).raw)
         face = person.crop((y1,x1,y1+y2,x1+x2))
-        w,h = face.size
-        hpercent = (210/float(h))
-        wsize = int((float(w)*float(hpercent)))
-        faces[user] = face.resize((wsize,210), Image.ANTIALIAS)
+        faces[user] = face.resize((210,210), Image.ANTIALIAS)
     elif user in faces:
         del faces[user]
 
