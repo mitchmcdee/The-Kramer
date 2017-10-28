@@ -1,13 +1,18 @@
 from flask import Flask, render_template, redirect, jsonify, request
 from waitress import serve
+import cognitive_face as CF
 from PIL import Image
+from collections import OrderedDict
 import requests
 import time
 import os
 
 KEY      = '923e32c414a04b14a2ecaec74190760a' # This is test account so meh if its stolen lel
-BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect'
+BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/'
 HEADER   = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': KEY}
+
+CF.Key.set(KEY)
+CF.BaseUrl.set(BASE_URL)
 
 THE_KRAMER            = 'static/images/theKramer.png'
 LEFT_CROPPED_KRAMER   = 'static/images/leftCroppedKramer.png'
@@ -17,15 +22,7 @@ CENTRE_MASKED_KRAMER  = 'static/images/centreMaskedKramer.png'
 CENTRE_CROPPED_KRAMER = 'static/images/centreCroppedKramer.png'
 
 app = Flask(__name__)
-faces = []
-
-# Testing, pls remove
-testImage = open('static/images/smiling.png', 'rb')
-r = requests.post(BASE_URL, headers=HEADER, data=testImage)
-x1, y1, x2, y2 = tuple(r.json()[0]['faceRectangle'].values())
-im = Image.open(testImage)
-face = im.crop((y1,x1,y1+y2,x1+x2))
-face.thumbnail((210, 210), Image.ANTIALIAS)
+faces = OrderedDict()
 
 ################################################################################
 
@@ -67,12 +64,11 @@ def getKramers():
     else:
         kramers.append(LEFT_CROPPED_KRAMER)
 
-    for i, face in enumerate(faces):
+    for i, faceInfo in enumerate(faces.items()):
         if i == len(faces) - 1: # If last
-            kramers.append(getKramer(face, 'r')) # Get right kramer
-
+            kramers.append(getKramer(faceInfo, 'r')) # Get right kramer
         else:
-            kramers.append(getKramer(face, 'c')) # Get centre kramer
+            kramers.append(getKramer(faceInfo, 'c')) # Get centre kramer
 
     return jsonify(kramers=kramers)
 
@@ -80,7 +76,21 @@ def getKramers():
 @app.route('/_clockIn', methods=['POST'])
 def addFace():
     r = request.get_json()['payload']['body']
+    user = r['user_id']
     print(r)
+
+    if r['type'] == 'clockin':
+        url = r['photo']
+        result = CF.face.detect(img_url)
+        x1, y1, x2, y2 = tuple(result[0]['faceRectangle'].values())
+        person = Image.open(requests.get(url, stream=True).raw)
+        face = person.crop((y1,x1,y1+y2,x1+x2))
+        face.thumbnail((210, 210), Image.ANTIALIAS)
+        faces[user] = face
+    elif user in faces:
+        del faces[user]
+
+    return 'OK'
 
 # Catch all
 @app.route("/")
