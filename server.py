@@ -22,6 +22,7 @@ CENTRE_CROPPED_KRAMER = 'static/images/centreCroppedKramer.png'
 
 app = Flask(__name__)
 faces = OrderedDict()
+users = {}
 
 # Remove all old files
 for f in glob.glob(os.path.join('static/images', "user_*")):
@@ -33,9 +34,8 @@ for f in glob.glob(os.path.join('static/images', "user_*")):
 def getKramer(faceInfo, position):
     user, face = faceInfo
     faceHash = tuple([user, position])
-    filename = 'static/images/user_' + ''.join(faceHash) + '.png'
-    if os.path.exists(filename):
-        return filename
+    if faceHash in users:
+        return users[faceHash]
 
     masked = Image.open(RIGHT_MASKED_KRAMER if position == 'r' else CENTRE_MASKED_KRAMER)
     cropped = Image.open(RIGHT_CROPPED_KRAMER if position == 'r' else CENTRE_CROPPED_KRAMER)
@@ -54,7 +54,9 @@ def getKramer(faceInfo, position):
         else:
             break
 
+    filename = 'static/images/user_' + str(time.time()) + '.png'
     final.save(filename)
+    users[faceHash] = filename
     return filename
 
 # Webhook to add face to server log
@@ -68,7 +70,6 @@ def getKramers():
         kramers.append(LEFT_CROPPED_KRAMER)
 
     for i, faceInfo in enumerate(faces.items()):
-        print(faceInfo)
         if i == len(faces) - 1: # If last
             kramers.append(getKramer(faceInfo, 'r')) # Get right kramer
         else:
