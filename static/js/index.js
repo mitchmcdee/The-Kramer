@@ -31,8 +31,8 @@ function updateKramers() {
         if (i == 0) {
             var a = document.createElement("a");
             a.setAttribute('href', '_stream');
-            a.appendChild(img);
             kramerSpan.appendChild(a);
+            a.appendChild(img);
         } else {
             kramerSpan.appendChild(img);
         }
