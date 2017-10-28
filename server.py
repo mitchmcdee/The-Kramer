@@ -65,6 +65,7 @@ def getKramers():
         kramers.append(LEFT_CROPPED_KRAMER)
 
     for i, faceInfo in enumerate(faces.items()):
+        print(faceInfo)
         if i == len(faces) - 1: # If last
             kramers.append(getKramer(faceInfo, 'r')) # Get right kramer
         else:
