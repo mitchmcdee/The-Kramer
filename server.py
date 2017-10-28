@@ -5,9 +5,9 @@ import requests
 import time
 import os
 
-KEY = '923e32c414a04b14a2ecaec74190760a'
+KEY      = '923e32c414a04b14a2ecaec74190760a' # This is test account so meh if its stolen lel
 BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect'
-HEADER = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': KEY}
+HEADER   = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': KEY}
 
 THE_KRAMER            = 'static/images/theKramer.png'
 LEFT_CROPPED_KRAMER   = 'static/images/leftCroppedKramer.png'
@@ -79,6 +79,7 @@ def getKramers():
 # Webhook to add face to server log
 @app.route('/_clockIn', methods=['GET', 'POST'])
 def addFace():
+    print(request.values)
     print('got webhook!')
     faces.append(['smiling', face]) # get from webhook, get face, add to faces with id
     return redirect('/') # Remove this

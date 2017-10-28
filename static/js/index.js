@@ -1,9 +1,9 @@
 SCROLL_RATE = 10;
 KRAMER_RATE = 5000;
 scrollModifier = 1;
-
 kramers = [];
 
+// Ping pong scroll the family portrait
 function autoBounce() {
     // change direction if we hit an edge
     if (document.body.scrollLeft == 0 ||
@@ -15,9 +15,9 @@ function autoBounce() {
     delay = setTimeout(autoBounce, SCROLL_RATE);
 }
 
+// Update kramer images
 function updateKramers() {
     kramerSpan = document.getElementById('kramers');
-
     // Remove all old kramers
     while (kramerSpan.hasChildNodes()) {
         kramerSpan.removeChild(kramerSpan.lastChild);
@@ -31,7 +31,9 @@ function updateKramers() {
     });
 }
 
+// Get kramer list
 function getKramers() {
+    // Send AJAX query
     $.ajax({ url: "_getKramers", type: "POST" }).done(res => {
         // If arrays are equal, don't update images
         if (res.kramers.join(',') == kramers.join(',')) {
@@ -46,7 +48,7 @@ function getKramers() {
     delay = setTimeout(getKramers, KRAMER_RATE);
 };
 
-// Set up 
+// Set up
 window.addEventListener('load', function() {
     autoBounce();
     getKramers();
