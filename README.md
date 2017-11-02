@@ -14,5 +14,5 @@ Inspired by the "Kramer" painting hanging in Tanda's Brisbane HQ. My project pro
 (If the server hasn't died + I still have domain registered)
 - [www.kramer.stream](http://kramer.steam)
 
-# Offline Demos:
-- ![desktop](demo.gif)
+# Offline Demo:
+![desktop](demo.gif)
