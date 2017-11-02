@@ -15,5 +15,4 @@ Inspired by the "Kramer" painting hanging in Tanda's Brisbane HQ. My project pro
 - [www.kramer.stream](http://kramer.steam)
 
 # Offline Demos:
-- [desktop](static/images/kramer.mp4)
-- [phone](static/images/kramerPhone.mp4)
+- ![desktop](demo.gif)
